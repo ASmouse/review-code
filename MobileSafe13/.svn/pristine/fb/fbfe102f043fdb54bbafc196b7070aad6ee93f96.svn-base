@@ -1,0 +1,74 @@
+package com.itheima.mobilesafe13.activity;
+
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.GridView;
+import android.widget.ImageView;
+
+import com.itheima.mobilesafe13.R;
+import com.nineoldandroids.animation.ObjectAnimator;
+
+/**
+ * @author Administrator
+ * @comp 黑马程序员
+ * @date 2015-9-12
+ * @desc 手机卫士的主界面
+
+ * @version $Rev$
+ * @author $Author$
+ * @Date  $Date$
+ * @Id    $Id$
+ * @Url   $URL$
+ * 
+ */
+public class HomeActivity extends Activity {
+	private ImageView iv_logo;
+	private ImageView iv_setting;
+	private GridView gv_tool;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		//初始化界面
+		initView();
+		
+		startAnimation();//开始动画
+	}
+
+	/**
+	 * 对logo添加旋转动画
+	 */
+	private void startAnimation() {
+		// 属性动画来完成logo的旋转
+		//target  要完成动画的View
+		//propertyName  setXXX   把set后面单词首字符改成小写
+		ObjectAnimator oa = ObjectAnimator.ofFloat(iv_logo, "rotationY" ,0,60,90,120,180,240,300,360);
+		//属性动画   对属性变化过程一系列的操作组成动画
+		
+		oa.setDuration(2000);//一次动画完成的时间
+		oa.setRepeatCount(ObjectAnimator.INFINITE);//-1
+		//开始播放动画
+		oa.start();
+		
+		
+		
+	}
+
+	private void initView() {
+		setContentView(R.layout.activity_home);
+		
+		//获取布局文件中所有子View
+		
+		//获取logo
+		iv_logo = (ImageView) findViewById(R.id.iv_home_logo);
+		
+		//设置的按钮
+		iv_setting = (ImageView) findViewById(R.id.iv_home_setting);
+		
+		//GridView
+		gv_tool = (GridView) findViewById(R.id.gv_home_tools);
+	}
+}

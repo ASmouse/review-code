@@ -1,0 +1,70 @@
+package com.itheima.mobilesafe13.view;
+
+import com.itheima.mobilesafe13.R;
+
+import android.content.Context;
+import android.graphics.PixelFormat;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Toast;
+
+/**
+ * @author Administrator
+ * @desc 自定义Toast
+ * @date 2015-9-18
+ * @Author $Author$ Id Rev URL
+ * @Date $Date$
+ * @Id $Id$
+ * @Rev $Rev$
+ * @URL $URL$
+ * 
+ */
+public class MyToast {
+
+	private WindowManager mWM;
+	private WindowManager.LayoutParams mParams;
+	private View mView;
+	private Context mContext ;
+
+	public MyToast(Context context) {
+		// 0. WindowManager
+		mContext = context;
+		mWM = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+
+		// 1. params
+		mParams = new WindowManager.LayoutParams();
+		mParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+		mParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+		mParams.format = PixelFormat.TRANSLUCENT;
+		//去掉toast原装动画
+		mParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+		mParams.setTitle("Toast");
+		mParams.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+				| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+				| WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+		
+		// 2. View
+		
+		
+	}
+
+	public void show() {
+		 mView = View.inflate(mContext, R.layout.sys_toast, null);
+		 mWM.addView(mView, mParams);
+	}
+	
+	public void hiden(){
+		if (mView != null) {
+            // note: checking parent() just to make sure the view has
+            // been added...  i have seen cases where we get here when
+            // the view isn't yet added, so let's try not to crash.
+            if (mView.getParent() != null) {
+               
+                mWM.removeView(mView);
+            }
+
+            mView = null;
+        }
+		
+	}
+}

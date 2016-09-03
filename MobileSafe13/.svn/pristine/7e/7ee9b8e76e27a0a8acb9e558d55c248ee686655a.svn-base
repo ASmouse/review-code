@@ -1,0 +1,221 @@
+package com.itheima.mobilesafe13.activity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.itheima.mobilesafe13.R;
+import com.itheima.mobilesafe13.dao.BlackDao;
+import com.itheima.mobilesafe13.db.BlackDB;
+import com.itheima.mobilesafe13.domain.BlackBean;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+/**
+ * @author Administrator
+ * @comp 黑马程序员
+ * @date 2015-9-16
+ * @desc 黑名单管理界面
+ * 
+ * @version $Rev$
+ * @author $Author$
+ * @Date $Date$
+ * @Id $Id$
+ * @Url $URL$
+ * 
+ */
+public class BlackActivity extends Activity {
+	protected static final int LOADING = 1;
+	protected static final int FINISH = 2;
+	private ImageView iv_add;
+	private LinearLayout ll_loading;
+	private ImageView iv_noData;
+	private ListView lv_showDatas;
+
+	// 存放黑名单数据的容器
+	private List<BlackBean> mBlackBeans = new ArrayList<BlackBean>();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+
+		initView();// 界面
+		initData();// 数据 有可能执行多次
+		initEvent();// 事件
+	}
+
+	private void initEvent() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private Handler mHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case LOADING: // 加载数据
+				// 加载数据进度条显示
+				ll_loading.setVisibility(View.VISIBLE);
+				// 隐藏 listview 和 nodata
+				lv_showDatas.setVisibility(View.GONE);
+				iv_noData.setVisibility(View.GONE);
+				break;
+			case FINISH:// 加载数据完成
+				// 隐藏加载数据进度条
+				ll_loading.setVisibility(View.GONE);
+
+				if (mBlackBeans.isEmpty()) {
+					// 没有数据 显示nodata 隐藏 listview
+					iv_noData.setVisibility(View.VISIBLE);
+					lv_showDatas.setVisibility(View.GONE);
+					
+				} else {
+					// 有数据 显示listview 隐藏nodata
+					lv_showDatas.setVisibility(View.VISIBLE);
+					iv_noData.setVisibility(View.GONE);
+					//刷新界面
+					mAdapter.notifyDataSetChanged();
+				}
+
+				break;
+			default:
+				break;
+			}
+
+		};
+	};
+	private MyAdapter mAdapter;
+	private BlackDao mBlackDao;
+	
+	private class MyAdapter extends BaseAdapter{
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return mBlackBeans.size();
+		}
+
+		@Override
+		public BlackBean getItem(int position) {
+			// TODO Auto-generated method stub
+			return mBlackBeans.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			//界面缓存
+			
+			ViewHolder viewHolder = null;
+			//判断是否有缓存
+			if (convertView == null) {
+				//没有缓存
+				convertView = View.inflate(getApplicationContext(), R.layout.item_black_lv, null);
+				viewHolder = new ViewHolder();
+				viewHolder.tv_mode = (TextView) convertView.findViewById(R.id.tv_item_black_lv_blackmode);
+				viewHolder.tv_phone = (TextView) convertView.findViewById(R.id.tv_item_black_lv_blackphone);
+				
+				viewHolder.iv_delete = (ImageView) convertView.findViewById(R.id.iv_item_black_lv_delete);
+				//设置标签
+				convertView.setTag(viewHolder);
+			} else {
+				//有缓存
+				viewHolder = (ViewHolder) convertView.getTag();
+			}
+			
+			//取值
+			BlackBean bean = getItem(position);
+			
+			//显示值
+			viewHolder.tv_phone.setText(bean.getPhone());//黑名单号码
+			switch (bean.getMode()) {
+			case BlackDB.SMS_MODE://短信拦截
+				viewHolder.tv_mode.setText("短信拦截");
+				break;
+			case BlackDB.PHONE_MODE://短信拦截
+				viewHolder.tv_mode.setText("电话拦截");
+				break;
+			case BlackDB.ALL_MODE://全部拦截
+				viewHolder.tv_mode.setText("全部拦截");
+				break;
+
+			default:
+				break;
+			}
+			//删除
+			return convertView;
+		}
+		
+	}
+	private class ViewHolder{
+		TextView tv_phone;
+		TextView tv_mode;
+		ImageView iv_delete;
+	}
+
+	private void initData() {
+		// 数据过大 子线程访问
+		new Thread() {
+			public void run() {
+				// 获取数据
+
+				// 1. 发送正在加载数据的消息
+				mHandler.obtainMessage(LOADING).sendToTarget();	
+				// 2. 加载数据
+				mBlackBeans = mBlackDao.findAll();
+				
+				//模式耗时
+				SystemClock.sleep(2000);
+				// 3. 加载完成
+				mHandler.obtainMessage(FINISH).sendToTarget();
+			};
+		}.start();
+	}
+
+	/**
+	 * 黑名单界面
+	 */
+	private void initView() {
+		// view
+
+		setContentView(R.layout.activity_black);
+
+		// 获取子view
+		// 添加黑名单数据的按钮
+		iv_add = (ImageView) findViewById(R.id.iv_black_add);
+
+		// 加载数据根布局
+
+		ll_loading = (LinearLayout) findViewById(R.id.ll_progressbar_root);
+
+		// 显示数据
+
+		lv_showDatas = (ListView) findViewById(R.id.lv_black_showdata);
+		
+		mAdapter = new MyAdapter();
+		lv_showDatas.setAdapter(mAdapter);//绑定适配器
+		
+		
+		mBlackDao = new BlackDao(this);
+
+		// 没有数据
+
+		iv_noData = (ImageView) findViewById(R.id.iv_black_nodata);
+
+	}
+}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- 标题 -->
+
+    <TextView
+        style="@style/title_style"
+        android:text="软件管家" />
+
+    <!-- 内存信息 -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="28dip" >
+	
+            <!-- 进度条为背景 -->
+            <ProgressBar
+                android:id="@+id/pb_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/progress_horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+               />
+            
+            <!-- 显示的文字 -->
+            <TextView
+                android:id="@+id/tv_appmanager_rommeminfo"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:text="rom:123m" />
+
+            
+
+        </RelativeLayout>
+
+        
+             <TextView
+            android:id="@+id/tv_appmanager_sdmeminfo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="sd:123m" />
+       
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <!-- ListView -->
+
+        <ListView
+            android:id="@+id/lv_appmanager_viewdatas"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone" >
+        </ListView>
+
+        <!-- 标签 -->
+
+        <TextView
+            android:id="@+id/tv_appmanager_lvtag"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff888888"
+            android:text="用户软件(3)"
+            android:textColor="#ffffffff"
+            android:visibility="gone" />
+        <!-- 进度条 -->
+
+        <include layout="@layout/progressbar_circle" />
+    </FrameLayout>
+
+</LinearLayout>

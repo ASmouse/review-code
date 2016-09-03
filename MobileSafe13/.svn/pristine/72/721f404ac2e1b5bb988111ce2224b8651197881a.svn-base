@@ -1,0 +1,16 @@
+package com.itheima.mobilesafe13.view;
+
+/**
+ * @author Administrator
+ * @desc 未加锁的fragment
+ * @date 2015-9-25
+ * @Author $Author$ Id Rev URL
+ * @Date $Date$
+ * @Id $Id$
+ * @Rev $Rev$
+ * @URL $URL$
+ *
+ */
+public class UnLockedFragment extends BaseLockFragment {
+
+}

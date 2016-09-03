@@ -1,0 +1,53 @@
+package com.itheima.mobilesafe13.activity;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import com.itheima.mobilesafe13.R;
+import com.itheima.mobilesafe13.view.AppLockHeadView;
+import com.itheima.mobilesafe13.view.AppLockHeadView.OnLockChangeListener;
+
+/**
+ * @author Administrator
+ * @desc 程序锁的界面
+ * @date 2015-9-25
+ * @Author $Author$ Id Rev URL
+ * @Date $Date$
+ * @Id $Id$
+ * @Rev $Rev$
+ * @URL $URL$
+ *
+ */
+public class AppLockActivity extends Activity {
+	private AppLockHeadView alhv_op;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		initView();
+		initEvent();
+	}
+
+	private void initEvent() {
+		alhv_op.setOnLockChangeListener(new OnLockChangeListener() {
+			
+			@Override
+			public void onLockChanged(boolean isLocked) {
+				if (isLocked) {
+					Toast.makeText(getApplicationContext(), "已加锁", 0).show();
+				} else {
+					Toast.makeText(getApplicationContext(), "未加锁", 0).show();
+				}
+				
+			}
+		});
+		
+	}
+
+	private void initView() {
+		setContentView(R.layout.activity_applock);
+		alhv_op = (AppLockHeadView) findViewById(R.id.alhv_head_tool);
+	}
+}

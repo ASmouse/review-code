@@ -1,0 +1,44 @@
+package com.itheima.mobilesafe13.activity;
+
+import com.itheima.mobilesafe13.R;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
+import android.view.Window;
+
+/**
+ * @author Administrator
+ * @comp 黑马程序员
+ * @date 2015-9-12
+ * @desc splash界面
+ * 
+ * @version $Rev$
+ * @author $Author$
+ * @Date $Date$
+ * @Id $Id$
+ * @Url $URL:
+ *      https://188.188.4.100/svn/mobilesafeserver/trunk/MobileSafe13/src/com
+ *      /itheima/mobilesafe13/activity/SplashActivity.java $
+ * 
+ */
+public class SplashActivity extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// 去掉标题,界面显示之前
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		setContentView(R.layout.activity_splash);
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+}

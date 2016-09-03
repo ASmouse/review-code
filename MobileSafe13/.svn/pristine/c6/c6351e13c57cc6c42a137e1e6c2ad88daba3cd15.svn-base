@@ -1,0 +1,69 @@
+package com.itheima.mobilesafe13.activity;
+
+import com.itheima.mobilesafe13.R;
+import com.itheima.mobilesafe13.utils.MyConstaints;
+import com.itheima.mobilesafe13.utils.SPUtils;
+import com.itheima.mobilesafe13.utils.ShowToast;
+
+import android.app.Activity;
+import android.text.TextUtils;
+import android.widget.EditText;
+import android.widget.Toast;
+
+/**
+ * @author Administrator
+ * @comp 黑马程序员
+ * @date 2015-9-13
+ * @desc 第一个设置向导界面
+
+ * @version $Rev$
+ * @author $Author$
+ * @Date  $Date$
+ * @Id    $Id$
+ * @Url   $URL$
+ * 
+ */
+public class Setup3Activity extends BaseSetupActivity {
+	private EditText et_safenumber;
+
+	protected void initView() {
+		setContentView(R.layout.activity_setup3);
+		//安全号码的编辑框
+		et_safenumber = (EditText) findViewById(R.id.et_setup3_safenumber);
+	}
+	
+	@Override
+	protected void initData() {
+		// 回显安全号码
+		et_safenumber.setText(SPUtils.getString(this, MyConstaints.SAFENUMBER, ""));
+		//设置光标停留的位置
+		et_safenumber.setSelection(et_safenumber.getText().toString().trim().length());
+		super.initData();
+	}
+	
+	
+
+	@Override
+	protected void startNext() {
+		//添加获取保存安全号码
+		String safeNumber = et_safenumber.getText().toString().trim();
+		//判断是否为空
+		if (TextUtils.isEmpty(safeNumber)) {
+			//空
+			ShowToast.show("安全号码不能为空", this);
+		} else {
+			//有安全号码
+			//保存安全到sp中
+			SPUtils.putString(getApplicationContext(), MyConstaints.SAFENUMBER, safeNumber);
+			//跳转到下一个页面
+			startPage(Setup4Activity.class);
+		}
+		
+	}
+
+	@Override
+	protected void startPrev() {
+		startPage(Setup2Activity.class);
+		
+	}
+}

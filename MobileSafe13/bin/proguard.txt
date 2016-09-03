@@ -1,0 +1,225 @@
+# view AndroidManifest.xml #generated:28
+-keep class android.test.InstrumentationTestRunner { <init>(...); }
+
+# view AndroidManifest.xml #generated:80
+-keep class cn.sharesdk.tencent.qq.ResultReceiver { <init>(...); }
+
+# view res/layout/activity_atool.xml #generated:54
+-keep class com.daimajia.numberprogressbar.NumberProgressBar { <init>(...); }
+
+# view res/layout/activity_antivirus.xml #generated:71
+-keep class com.github.lzyzsd.circleprogress.CircleProgress { <init>(...); }
+
+# view AndroidManifest.xml #generated:167
+-keep class com.itheima.mobilesafe13.activity.AToolActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:161
+-keep class com.itheima.mobilesafe13.activity.AndroidBlackActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:110
+-keep class com.itheima.mobilesafe13.activity.AntiVirusActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:106
+-keep class com.itheima.mobilesafe13.activity.AppLockActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:145
+-keep class com.itheima.mobilesafe13.activity.AppManagerActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:155
+-keep class com.itheima.mobilesafe13.activity.BlackActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:108
+-keep class com.itheima.mobilesafe13.activity.CacheInfoActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:177
+-keep class com.itheima.mobilesafe13.activity.ConnectivityActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:188
+-keep class com.itheima.mobilesafe13.activity.EnterPassLockActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:171
+-keep class com.itheima.mobilesafe13.activity.FriendsActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:179
+-keep class com.itheima.mobilesafe13.activity.HomeActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:175
+-keep class com.itheima.mobilesafe13.activity.LostFindActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:147
+-keep class com.itheima.mobilesafe13.activity.PhoneLocationActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:159
+-keep class com.itheima.mobilesafe13.activity.ServiceNumberActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:149
+-keep class com.itheima.mobilesafe13.activity.SettingCenterActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:157
+-keep class com.itheima.mobilesafe13.activity.Setup1Activity { <init>(...); }
+
+# view AndroidManifest.xml #generated:165
+-keep class com.itheima.mobilesafe13.activity.Setup2Activity { <init>(...); }
+
+# view AndroidManifest.xml #generated:169
+-keep class com.itheima.mobilesafe13.activity.Setup3Activity { <init>(...); }
+
+# view AndroidManifest.xml #generated:173
+-keep class com.itheima.mobilesafe13.activity.Setup4Activity { <init>(...); }
+
+# view AndroidManifest.xml #generated:153
+-keep class com.itheima.mobilesafe13.activity.SmsAcitivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:134
+-keep class com.itheima.mobilesafe13.activity.SplashActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:143
+-keep class com.itheima.mobilesafe13.activity.TaskManagerActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:151
+-keep class com.itheima.mobilesafe13.activity.TelAcitivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:163
+-keep class com.itheima.mobilesafe13.activity.WebBlackActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:114
+-keep class com.itheima.mobilesafe13.apshare.ShareEntryActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:194
+-keep class com.itheima.mobilesafe13.receiver.BootCompleteReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:207
+-keep class com.itheima.mobilesafe13.receiver.MyAppWidgetProvider { <init>(...); }
+
+# view AndroidManifest.xml #generated:217
+-keep class com.itheima.mobilesafe13.receiver.MyDeviceAdminReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:201
+-keep class com.itheima.mobilesafe13.receiver.WidgetClearTaskReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:237
+-keep class com.itheima.mobilesafe13.service.BlackService { <init>(...); }
+
+# view AndroidManifest.xml #generated:233
+-keep class com.itheima.mobilesafe13.service.IncomingShowLocationService { <init>(...); }
+
+# view AndroidManifest.xml #generated:235
+-keep class com.itheima.mobilesafe13.service.LostFindService { <init>(...); }
+
+# view AndroidManifest.xml #generated:241
+-keep class com.itheima.mobilesafe13.service.MyAccessibilityService { <init>(...); }
+
+# view AndroidManifest.xml #generated:231
+-keep class com.itheima.mobilesafe13.service.ScreenOffClearTaskService { <init>(...); }
+
+# view AndroidManifest.xml #generated:239
+-keep class com.itheima.mobilesafe13.service.TaskWidgetService { <init>(...); }
+
+# view AndroidManifest.xml #generated:252
+-keep class com.itheima.mobilesafe13.service.WatchDogService { <init>(...); }
+
+# view res/layout/activity_applock.xml #generated:9
+-keep class com.itheima.mobilesafe13.view.AppLockHeadView { <init>(...); }
+
+# view res/layout/activity_home.xml #generated:43
+-keep class com.itheima.mobilesafe13.view.FocusTextView { <init>(...); }
+
+# view res/layout/acitivity_taskmanager.xml #generated:141
+# view res/layout/acitivity_taskmanager.xml #generated:148
+# view res/layout/activity_atool.xml #generated:15
+# view res/layout/activity_atool.xml #generated:24
+# view res/layout/activity_atool.xml #generated:35
+# view res/layout/activity_atool.xml #generated:44
+# view res/layout/activity_atool.xml #generated:75
+# view res/layout/activity_atool.xml #generated:83
+# view res/layout/activity_atool.xml #generated:90
+# view res/layout/activity_settingcenter.xml #generated:15
+# view res/layout/activity_settingcenter.xml #generated:24
+# view res/layout/activity_settingcenter.xml #generated:33
+# view res/layout/activity_settingcenter.xml #generated:43
+-keep class com.itheima.mobilesafe13.view.SettingCenterItem { <init>(...); }
+
+# view res/layout/acitivity_appmanager.xml #generated:22
+# view res/layout/acitivity_appmanager.xml #generated:28
+# view res/layout/acitivity_taskmanager.xml #generated:38
+# view res/layout/acitivity_taskmanager.xml #generated:44
+-keep class com.itheima.mobilesafe13.view.TextProgressView { <init>(...); }
+
+# view AndroidManifest.xml #generated:64
+-keep class com.itheima.mobilesafe13.wxapi.WXEntryActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:72
+-keep class com.itheima.mobilesafe13.yxapi.YXEntryActivity { <init>(...); }
+
+# view res/layout/activity_black.xml #generated:41
+-keep class com.itheima11.refreshlistview_lib.RefreshListView { <init>(...); }
+
+# view AndroidManifest.xml #generated:119
+-keep class com.mob.tools.MobUIShell { <init>(...); }
+
+# view AndroidManifest.xml #generated:102
+-keep class com.startapp.android.publish.AppWallActivity { <init>(...); }
+
+# view res/layout/activity_home.xml #generated:66
+-keep class com.startapp.android.publish.banner.Banner { <init>(...); }
+
+# view AndroidManifest.xml #generated:99
+-keep class com.startapp.android.publish.list3d.List3DActivity { <init>(...); }
+
+# view res/layout/acitivity_appmanager.xml #generated:40
+# view res/layout/fragment_lock_view.xml #generated:2
+-keep class se.emilsjolander.stickylistheaders.StickyListHeadersListView { <init>(...); }
+
+# onClick res/layout/activity_setup2.xml #generated:25
+-keepclassmembers class * { *** bindSim(...); }
+
+# onClick res/layout/activity_cacheinfo.xml #generated:26
+-keepclassmembers class * { *** clearCache(...); }
+
+# onClick res/layout/acitivity_taskmanager.xml #generated:20
+-keepclassmembers class * { *** clearTask(...); }
+
+# onClick res/layout/activity_lock_pass.xml #generated:24
+-keepclassmembers class * { *** enter(...); }
+
+# onClick res/layout/activity_lostfind.xml #generated:64
+-keepclassmembers class * { *** enterSetup1(...); }
+
+# onClick res/layout/acitivity_taskmanager.xml #generated:176
+-keepclassmembers class * { *** fanSelect(...); }
+
+# onClick res/layout/activity_setup1.xml #generated:89
+# onClick res/layout/activity_setup2.xml #generated:96
+# onClick res/layout/activity_setup3.xml #generated:95
+# onClick res/layout/activity_setup4.xml #generated:82
+-keepclassmembers class * { *** nextPage(...); }
+
+# onClick res/layout/activity_setup2.xml #generated:106
+# onClick res/layout/activity_setup3.xml #generated:106
+# onClick res/layout/activity_setup4.xml #generated:92
+-keepclassmembers class * { *** prevPage(...); }
+
+# onClick res/layout/activity_phonelocation.xml #generated:20
+-keepclassmembers class * { *** query(...); }
+
+# onClick res/layout/acitivity_taskmanager.xml #generated:167
+-keepclassmembers class * { *** selectAll(...); }
+
+# onClick res/layout/activity_setup3.xml #generated:34
+-keepclassmembers class * { *** selectSafeNumber(...); }
+
+# onClick res/layout/activity_black_web.xml #generated:87
+-keepclassmembers class * { *** shang(...); }
+
+# onClick res/layout/activity_black_web.xml #generated:69
+-keepclassmembers class * { *** shou(...); }
+
+# onClick res/layout/activity_black_web.xml #generated:105
+-keepclassmembers class * { *** tiao(...); }
+
+# onClick res/layout/activity_black_web.xml #generated:78
+-keepclassmembers class * { *** wei(...); }
+
+# onClick res/layout/activity_black_web.xml #generated:96
+-keepclassmembers class * { *** xia(...); }
+

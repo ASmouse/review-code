@@ -1,0 +1,225 @@
+package com.itheima.mobilesafe13.activity;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.itheima.mobilesafe13.R;
+import com.itheima.mobilesafe13.utils.MyConstaints;
+import com.itheima.mobilesafe13.utils.SPUtils;
+
+/**
+ * @author Administrator
+ * @comp 黑马程序员
+ * @date 2015-9-12
+ * @desc splash界面
+ * 
+ * @version $Rev$
+ * @author $Author$
+ * @Date $Date$
+ * @Id $Id$
+ * @Url $URL:
+ *      https://188.188.4.100/svn/mobilesafeserver/trunk/MobileSafe13/src/com
+ *      /itheima/mobilesafe13/activity/SplashActivity.java $
+ * 
+ */
+public class SplashActivity extends Activity {
+
+	private RelativeLayout rl_root;
+	private TextView tv_versiocode;
+	private TextView tv_versioname;
+	private PackageManager mPm;
+	private AnimationSet mAS;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		// 去掉标题,界面显示之前
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		//模拟数据 TODO 功能测试完删除下面代码
+		SPUtils.putBoolean(getApplicationContext(), MyConstaints.AUTOUPDATE, true);
+
+		// 界面
+		initView();
+
+		// 数据
+		initData();
+
+		// 初始化动画
+		initAnimation();
+
+		// 事件
+		initEvent();
+
+	}
+
+	private void initAnimation() {
+		// 补间动画
+
+		// 旋转动画
+		RotateAnimation ra = new RotateAnimation(0, 360,
+				// 设置锚点
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+
+		// 设置动画参数
+		ra.setDuration(2000);
+		// 补间 影子动画
+		// 停留在动画结束的位置
+		ra.setFillAfter(true);
+
+		// 比例动画
+		ScaleAnimation sa = new ScaleAnimation(0.0f, 1.0f, 0f, 1.0f,
+				// 设置锚点
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+		sa.setDuration(2000);
+		// 停留在动画结束的位置
+		sa.setFillAfter(true);
+
+		// Alpha动画
+		AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
+		aa.setDuration(2000);
+		// 停留在动画结束的位置
+		aa.setFillAfter(true);
+
+		// 动画集
+		// false 每种动画用自己的动画插入器（数学函数）
+
+		mAS = new AnimationSet(false);
+
+		// 添加旋转动画
+		mAS.addAnimation(ra);
+		// 添加比例动画
+		mAS.addAnimation(sa);
+		// 添加渐变动画
+		mAS.addAnimation(aa);
+		// 播放动画
+		rl_root.startAnimation(mAS);
+	}
+
+	private void initEvent() {
+		// 监听动画开始和结束的事件
+		mAS.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+				// 动画开始
+				// 初始化数据 初始化网络(子线程)
+				// 版本更新
+				if (SPUtils.getBoolean(getApplicationContext(),
+						MyConstaints.AUTOUPDATE, false)) {
+					// 版本更新
+					checkVersion();
+				} else {
+					// 不更新
+					// 进入主界面 不干活 由动画结束来完成界面跳转
+				}
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				// 动画结束
+				// 是否进行版本更新，不进行版本更新，动画播完直接进入主界面
+				if (SPUtils.getBoolean(getApplicationContext(),
+						MyConstaints.AUTOUPDATE, false)) {
+					// 版本更新 不干活
+					System.out.println("版本更新");
+				} else {
+					// 不更新
+					// 进入主界面
+					startHome();
+				}
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// 动画重复
+
+			}
+		});
+
+	}
+	
+	/**
+	 * 进入主界面
+	 */
+	private void startHome(){
+		Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+		startActivity(intent);
+		
+		//关闭自己
+		finish();
+	}
+
+	// 版本更新检测
+	protected void checkVersion() {
+		// 检测版本
+		// 安装
+		// 跳转
+System.out.println("checkVersion.....");
+	}
+
+	private void initData() {
+		// 组织数据
+		// 版本名 从清单文件中配置
+		// api PackageManager 静态数据 ActivityManager 动态数据,内存的使用
+
+		// Manager 结尾 getContext();
+
+		mPm = getPackageManager();
+
+		try {
+			PackageInfo packageInfo = mPm.getPackageInfo(getPackageName(), 0);
+			// 版本号
+			int versionCode = packageInfo.versionCode;
+			// 版本名
+			String versionName = packageInfo.versionName;
+			// 显示数据
+			tv_versioname.setText(versionName);
+
+			tv_versiocode.setText(versionCode + "");
+
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private void initView() {
+		// 初始化界面
+		setContentView(R.layout.activity_splash);
+
+		// 获取splash界面的根布局
+		rl_root = (RelativeLayout) findViewById(R.id.rl_splash_root);
+
+		// 版本号
+		tv_versiocode = (TextView) findViewById(R.id.tv_splash_versioncode);
+
+		// 版本名
+		tv_versioname = (TextView) findViewById(R.id.tv_splash_versionname);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+}

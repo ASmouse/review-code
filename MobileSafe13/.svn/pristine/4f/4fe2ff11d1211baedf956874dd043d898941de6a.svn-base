@@ -1,0 +1,35 @@
+package com.itheima.mobilesafe13.domain;
+
+/**
+ * @author Administrator
+ * @comp 黑马程序员
+ * @date 2015-9-16
+ * @desc 黑名单数据的封装类
+
+ * @version $Rev$
+ * @author $Author$
+ * @Date  $Date$
+ * @Id    $Id$
+ * @Url   $URL$
+ * 
+ */
+public class BlackBean {
+	private String phone;
+	@Override
+	public String toString() {
+		return "BlackBean [phone=" + phone + ", mode=" + mode + "]";
+	}
+	private int mode;
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public int getMode() {
+		return mode;
+	}
+	public void setMode(int mode) {
+		this.mode = mode;
+	}
+}

@@ -1,0 +1,18 @@
+package com.itheima.mobilesafe13.utils;
+
+/**
+ * @author Administrator
+ * @comp 黑马程序员
+ * @date 2015-9-13
+ * @desc xxxx
+
+ * @version $Rev$
+ * @author $Author$
+ * @Date  $Date$
+ * @Id    $Id$
+ * @Url   $URL$
+ * 
+ */
+public class Md5Utils {
+
+}

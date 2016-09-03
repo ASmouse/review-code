@@ -1,0 +1,255 @@
+package com.itheima.mobilesafe13.activity;
+
+import java.util.List;
+import java.util.Vector;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.text.format.Formatter;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.itheima.mobilesafe13.R;
+import com.itheima.mobilesafe13.domain.AppInfoBean;
+import com.itheima.mobilesafe13.utils.AppInfoUtils;
+import com.itheima.mobilesafe13.utils.TaskInfoUtils;
+import com.itheima.mobilesafe13.view.TextProgressView;
+
+/**
+ * @author Administrator
+ * @desc  进程管家
+ * @date 2015-9-22
+ * @Author $Author$ Id Rev URL
+ * @Date $Date$
+ * @Id $Id$
+ * @Rev $Rev$
+ * @URL $URL$
+ *
+ */
+public class TaskManagerActivity extends Activity {
+	protected static final int LOADING = 1;
+	protected static final int FINISH = 2;
+	private ListView lv_datas;
+	private TextProgressView tpv_memory_info;
+	private TextProgressView tpv_processnumber_info;
+	private LinearLayout ll_loading;
+	private TextView tv_lv_tag;
+	
+	
+	private long totalMem;
+	private long availMem;
+	private int allInstalledAppNumber;
+	
+	
+	//用户进程数据
+	private List<AppInfoBean> userAppInfoBeans = new Vector<AppInfoBean>();
+	//系统进程数据
+	private List<AppInfoBean> sysAppInfoBeans = new Vector<AppInfoBean>();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		
+		
+		initView();
+		
+		initData();
+	}
+
+	private Handler mHandler = new Handler(){
+		public void handleMessage(android.os.Message msg) {
+			switch (msg.what) {
+			case LOADING://正在加载数据
+				ll_loading.setVisibility(View.VISIBLE);
+				lv_datas.setVisibility(View.GONE);
+				tv_lv_tag.setVisibility(View.GONE);
+				break;
+			case FINISH://加载数据完成
+				ll_loading.setVisibility(View.GONE);
+				lv_datas.setVisibility(View.VISIBLE);
+				tv_lv_tag.setVisibility(View.VISIBLE);
+				
+				//显示数据
+				//1. 显示进程个数的信息
+				int taskNumber = (userAppInfoBeans.size() + sysAppInfoBeans.size());
+				tpv_processnumber_info.setMessage("运行中的进程：" + taskNumber);
+				tpv_processnumber_info.setProgress(taskNumber * 1.0 / allInstalledAppNumber);
+				
+				//2. 内存的使用
+				tpv_memory_info.setMessage("可用内存/总内存：" + Formatter.formatFileSize(getApplicationContext(),availMem)
+						+ "/" +  Formatter.formatFileSize(getApplicationContext(),totalMem));
+				tpv_memory_info.setProgress((totalMem - availMem) * 1.0 / totalMem);
+				
+				//3. lv的数据更新 
+				mAdapter.notifyDataSetChanged();
+				break;
+			default:
+				break;
+			}
+		};
+	};
+	private MyAdapter mAdapter;
+	
+	private void initData() {
+		//子线程获取数据
+		
+		new Thread(){
+			
+
+			public void run() {
+				//1. 发送正在数据
+				mHandler.obtainMessage(LOADING).sendToTarget();
+				
+				//2. 获取数据
+				
+				List<AppInfoBean> allRunningAppInfos = TaskInfoUtils.getAllRunningAppInfos(getApplicationContext());
+			
+				//分类数据
+				for (AppInfoBean appInfoBean : allRunningAppInfos) {
+					if (appInfoBean.isSystem()) {
+						//系统
+						sysAppInfoBeans.add(appInfoBean);
+					} else {
+						//用户
+						userAppInfoBeans.add(appInfoBean);
+					}
+				}
+				
+				//内存
+				
+				totalMem = TaskInfoUtils.getTotalMem();
+				availMem = TaskInfoUtils.getAvailMem(getApplicationContext());
+				
+				//总app个数 
+				
+				allInstalledAppNumber = AppInfoUtils.getAllInstalledAppNumber(getApplicationContext());
+				
+SystemClock.sleep(1000);
+				//3. 发送数据加载完成的消息
+				mHandler.obtainMessage(FINISH).sendToTarget();
+				
+			};
+		}.start();
+		
+	}
+	
+	private class MyAdapter extends BaseAdapter{
+
+		@Override
+		public int getCount() {
+			//数据个数
+			return userAppInfoBeans.size() + 1 + sysAppInfoBeans.size() + 1;
+		}
+
+		@Override
+		public AppInfoBean getItem(int position) {
+			AppInfoBean bean = null;
+			// 工具position 获取bean
+			if (position <= userAppInfoBeans.size()) {
+				bean = userAppInfoBeans.get(position - 1);
+			} else {
+				//系统
+				bean = sysAppInfoBeans.get(position - (userAppInfoBeans.size() + 2));
+			}
+			return bean;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			//view
+			//2个标签
+			if (position == 0) {
+				//用户app标签
+				TextView tv_usertag = new TextView(getApplicationContext());
+				tv_usertag.setBackgroundColor(Color.GRAY);// 背景灰色
+				tv_usertag.setTextColor(Color.WHITE);// 字体白色
+				tv_usertag.setText("用户软件(" + userAppInfoBeans.size() + ")");
+				return tv_usertag;
+			} else if (position == userAppInfoBeans.size() + 1){
+				//系统app标签
+				TextView tv_usertag = new TextView(getApplicationContext());
+				tv_usertag.setBackgroundColor(Color.GRAY);// 背景灰色
+				tv_usertag.setTextColor(Color.WHITE);// 字体白色
+				tv_usertag.setText("系统软件(" + sysAppInfoBeans.size() + ")");
+				return tv_usertag;
+			} else {
+				//自定义View
+				ViewHolder viewHolder = null;
+				if (convertView == null || convertView instanceof TextView) {
+					//创建view
+					convertView = View.inflate(getApplicationContext(), R.layout.item_taskmanager_lv, null);
+					viewHolder = new ViewHolder();
+					
+					//名字
+					viewHolder.tv_appname = (TextView) convertView.findViewById(R.id.tv_taskmanager_lv_taskname);
+					//内存
+					viewHolder.tv_appmemsize = (TextView) convertView.findViewById(R.id.tv_taskmanager_lv_taskmemorysize);
+					//图标
+					viewHolder.iv_icon = (ImageView) convertView.findViewById(R.id.iv_taskmanager_lv_icon);
+					//是否勾选
+					viewHolder.cb_checked = (CheckBox) convertView.findViewById(R.id.cb_taskmanager_isselect);
+					convertView.setTag(viewHolder);
+				} else {
+					//convertView  R.layout.item_taskmanager_lv
+					viewHolder = (ViewHolder) convertView.getTag();
+				}
+				
+				//显示信息
+				AppInfoBean bean = getItem(position);
+				
+				viewHolder.tv_appname.setText(bean.getAppName());
+				viewHolder.tv_appmemsize.setText(Formatter.formatFileSize(getApplicationContext(), bean.getMemSize()));
+				viewHolder.iv_icon.setImageDrawable(bean.getIcon());
+				//复选框
+				
+				return convertView;
+			}
+			
+		}
+		
+	}
+	
+	private class ViewHolder{
+		TextView tv_appname;
+		CheckBox cb_checked;
+		TextView tv_appmemsize;
+		ImageView iv_icon;
+	}
+
+	private void initView() {
+		setContentView(R.layout.acitivity_taskmanager);
+		//lv显示进程信息
+		lv_datas = (ListView) findViewById(R.id.lv_tastmanager_viewdatas);
+		
+		mAdapter = new MyAdapter();
+		lv_datas.setAdapter(mAdapter);
+		
+		//内存信息
+		tpv_memory_info = (TextProgressView) findViewById(R.id.tpv_tastmanager_memory_mess);
+		//进程信息
+		tpv_processnumber_info = (TextProgressView) findViewById(R.id.tpv_tastmanager_processnumber_mess);
+		
+		//显示加载数据进度
+		ll_loading = (LinearLayout) findViewById(R.id.ll_progressbar_root);
+		
+		//lv的tag
+		tv_lv_tag = (TextView) findViewById(R.id.tv_tastmanager_lvtag);
+	
+	}
+}

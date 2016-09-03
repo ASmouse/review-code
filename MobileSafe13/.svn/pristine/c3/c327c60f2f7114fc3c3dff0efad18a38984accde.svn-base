@@ -1,0 +1,172 @@
+package com.itheima.mobilesafe13.activity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.itheima.mobilesafe13.R;
+import com.itheima.mobilesafe13.dao.ContactsDao;
+import com.itheima.mobilesafe13.domain.ContactBean;
+
+import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+/**
+ * @author Administrator
+ * @comp 黑马程序员
+ * @date 2015-9-14
+ * @desc 显示所有好友信息的界面
+
+ * @version $Rev$
+ * @author $Author$
+ * @Date  $Date$
+ * @Id    $Id$
+ * @Url   $URL$
+ * 
+ */
+public class FriendsActivity extends ListActivity {
+	private static final int LOADING = 1;
+	protected static final int FINISH = 2;
+	private ListView lv_datas;
+
+	private List<ContactBean> mDatas = new ArrayList<ContactBean>();//默认数组大小是10个
+
+	private MyAdapater mAdapter;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		//显示所有的好友 
+		//1. 数据 好友信息
+		
+		//2. 定义适配
+		//3. 给ListView设置适配器
+		initView();
+		
+		initData();
+		
+	}
+	
+	private Handler mHanlder = new Handler(){
+		private ProgressDialog pd;
+
+		public void handleMessage(android.os.Message msg) {
+			//在主线程中执行
+			switch (msg.what) {
+			case LOADING:
+				//对话框显示加载数据
+				
+				pd = new ProgressDialog(FriendsActivity.this);
+				pd.setTitle("注意");
+				pd.setMessage("正在玩命加载数据......");
+				pd.show();
+				break;
+			case FINISH:
+				//关闭对话框
+				pd.dismiss();
+				
+				//更新数据
+				mAdapter.notifyDataSetChanged();//通知界面刷新数据
+				break;
+			default:
+				break;
+			}
+		};
+	};
+	
+	private void initData() {
+		new Thread(){
+			public void run() {
+				// 1. 提醒用户正在加载数据
+				mHanlder.obtainMessage(LOADING).sendToTarget();
+				// Message msg = mHanlder.obtainMessage(LOADING)
+				// target.sendMessage(this);
+				// mHandler.sendMessage(msg);
+				
+				//2. 加载数据
+				mDatas = ContactsDao.getContacts(getApplicationContext());
+				SystemClock.sleep(2000);//模拟耗时2秒
+				//3. 数据加载完成
+				// 发送数据加载完成的消息
+				mHanlder.obtainMessage(FINISH).sendToTarget();
+				
+			};
+		}.start();
+		
+	}
+
+	private class MyAdapater extends BaseAdapter{
+ 
+		@Override
+		public int getCount() {
+			//返回数据的大小
+System.out.println("getCount()");			
+			return mDatas.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+System.out.println(convertView);	
+			ViewHolder holder = null;
+			// 缓存View
+			if(convertView == null) {
+				//没有缓存
+				//布局转成view
+				convertView = View.inflate(getApplicationContext(), R.layout.item_contacts_lv, null);
+				holder = new ViewHolder();
+				//把子View设置给ViewHolder
+				holder.tv_name = (TextView) convertView.findViewById(R.id.tv_item_contact_name);
+				holder.tv_phone = (TextView) convertView.findViewById(R.id.tv_item_contact_phone);
+				//避免重复findViewByid
+				//设置标记给contentView
+				convertView.setTag(holder);
+			}  else {
+				//取出标记
+				holder = (ViewHolder) convertView.getTag();
+			}
+			
+			//获取数据
+			ContactBean contactBean = mDatas.get(position);
+			
+			//设置数据
+			holder.tv_name.setText(contactBean.getName());
+			holder.tv_phone.setText(contactBean.getPhone());
+			
+			
+			return convertView;
+		}
+		
+	}
+	
+	private class ViewHolder{
+		TextView tv_name;
+		TextView tv_phone;
+	}
+
+	private void initView() {
+		lv_datas = getListView();
+		mAdapter = new MyAdapater();
+		//设置适配器
+		lv_datas.setAdapter(mAdapter);
+		
+	}
+}

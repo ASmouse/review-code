@@ -1,0 +1,196 @@
+package com.itheima.mobilesafe13.activity;
+
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.itheima.mobilesafe13.R;
+import com.itheima.mobilesafe13.utils.MyConstaints;
+import com.itheima.mobilesafe13.utils.SPUtils;
+import com.nineoldandroids.animation.ObjectAnimator;
+
+/**
+ * @author Administrator
+ * @comp 黑马程序员
+ * @date 2015-9-12
+ * @desc 手机卫士的主界面
+
+ * @version $Rev$
+ * @author $Author$
+ * @Date  $Date$
+ * @Id    $Id$
+ * @Url   $URL$
+ * 
+ */
+public class HomeActivity extends Activity {
+	private ImageView iv_logo;
+	private ImageView iv_setting;
+	private GridView gv_tool;
+	
+	private static final String[] names = new String[]{"手机防盗","通讯卫士","软件管家","进程管理","流量统计","病毒查杀","缓存清理","高级工具"};
+	private static final String[] descs = new String[]{"手机丢失好找","防骚扰防监听","方便管理软件","保持手机通畅","注意流量超标","手机安全保障","手机快步如飞","特性处理更好"};
+	private static final int[] icons = new int[]{R.drawable.sjfd,R.drawable.srlj,R.drawable.rjgj,R.drawable.jcgl,
+		R.drawable.lltj,R.drawable.sjsd,R.drawable.hcql,R.drawable.szzx};
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		//初始化界面
+		initView();
+		
+		startAnimation();//开始动画
+		
+		initData();// 设置数据
+		
+		initEvent();//初始化事件
+	}
+
+	private void initEvent() {
+		//给GridView添加item点击事件
+		gv_tool.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				switch (position) {
+				case 0: //手机防盗
+					//首次使用 显示设置密码的对话框
+					//已经设置过密码，显示输入密码的对话
+					String password = SPUtils.getString(getApplicationContext(), MyConstaints.PASSWORD, null);
+					if (TextUtils.isEmpty(password)) {
+						//没有设置过密码
+						//显示设置密码的对话框
+						showSetPasswordDialog();
+					} else {
+						//设置过密码，显示输入密码的对话
+						showEnterPasswordDialog();
+					}
+					break;
+
+				default:
+					break;
+				}
+			}
+		});
+	}
+
+	/**
+	 * 显示输入密码的对话框
+	 */
+	protected void showEnterPasswordDialog() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * 设置密码的对话框
+	 */
+	protected void showSetPasswordDialog() {
+		AlertDialog.Builder ab = new AlertDialog.Builder(this);
+		//把布局转换成View
+		View view = View.inflate(getApplicationContext(), R.layout.dialog_setpassword, null);
+		ab.setView(view);
+		ab.show();
+		
+	}
+
+	private void initData() {
+		MyAdapater adapater = new MyAdapater();
+		//设置适配器
+		gv_tool.setAdapter(adapater);
+		
+	}
+
+	/**
+	 * 对logo添加旋转动画
+	 */
+	private void startAnimation() {
+		// 属性动画来完成logo的旋转
+		//target  要完成动画的View
+		//propertyName  setXXX   把set后面单词首字符改成小写
+		ObjectAnimator oa = ObjectAnimator.ofFloat(iv_logo, "rotationY" ,0,60,90,120,180,240,300,360);
+		//属性动画   对属性变化过程一系列的操作组成动画
+		
+		oa.setDuration(2000);//一次动画完成的时间
+		oa.setRepeatCount(ObjectAnimator.INFINITE);//-1
+		//开始播放动画
+		oa.start();
+		
+		
+		
+	}
+	
+	private class MyAdapater extends BaseAdapter{
+
+		@Override
+		public int getCount() {
+			// 数据的个数
+			return names.length;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			// 界面转换成View
+			View view = View.inflate(getApplicationContext(), R.layout.item_home_gv, null);
+			
+			//view的子组件
+			ImageView iv_icon = (ImageView) view.findViewById(R.id.iv_item_home_gv_icon);
+			//标题
+			TextView tv_title = (TextView) view.findViewById(R.id.tv_item_home_gv_title);
+			
+//			描述
+			TextView tv_desc = (TextView) view.findViewById(R.id.tv_item_home_gv_desc);
+			
+			//赋值
+			
+			//图片
+			iv_icon.setImageResource(icons[position]);
+			//标题
+			tv_title.setText(names[position]);
+//			描述 
+			tv_desc.setText(descs[position]);
+			return view;
+		}
+		
+	}
+	
+	
+
+	private void initView() {
+		setContentView(R.layout.activity_home);
+		
+		//获取布局文件中所有子View
+		
+		//获取logo
+		iv_logo = (ImageView) findViewById(R.id.iv_home_logo);
+		
+		//设置的按钮
+		iv_setting = (ImageView) findViewById(R.id.iv_home_setting);
+		
+		//GridView
+		gv_tool = (GridView) findViewById(R.id.gv_home_tools);
+	}
+}

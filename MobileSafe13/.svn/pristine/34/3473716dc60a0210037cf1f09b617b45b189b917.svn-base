@@ -1,0 +1,110 @@
+package com.itheima.mobilesafe13.view;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.itheima.mobilesafe13.R;
+
+/**
+ * @author Administrator
+ * @desc 程序锁界面的头布局封装view
+ * @date 2015-9-25
+ * @Author $Author$ Id Rev URL
+ * @Date $Date$
+ * @Id $Id$
+ * @Rev $Rev$
+ * @URL $URL$
+ * 
+ */
+public class AppLockHeadView extends RelativeLayout {
+
+	private View rootView;
+	private TextView tv_lock;
+	private TextView tv_unlock;
+
+	public AppLockHeadView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		initView();
+		initEvent();
+	}
+	
+	private OnLockChangeListener mOnLockChangeListener;
+	
+	public void setOnLockChangeListener(OnLockChangeListener onLockChangeListener){
+		this.mOnLockChangeListener = onLockChangeListener;
+	}
+	
+	/**
+	 * @author Administrator
+	 * @desc 按钮的回调接口
+	 * @date 2015-9-25
+	 * @Author $Author$ Id Rev URL
+	 * @Date $Date$
+	 * @Id $Id$
+	 * @Rev $Rev$
+	 * @URL $URL$
+	 *
+	 */
+	public interface OnLockChangeListener{
+		/**
+		 * @param isLocked
+		 *       true 已加锁  false  未加锁
+		 */
+		void onLockChanged(boolean isLocked);
+	}
+
+	private void initEvent() {
+		OnClickListener listener = new OnClickListener() {
+			boolean isLock = false;
+			@Override
+			public void onClick(View v) {
+				switch (v.getId()) {
+				case R.id.tv_applock_lock:// 加锁
+					tv_lock.setBackgroundResource(R.drawable.tab_left_pressed);
+					tv_unlock.setBackgroundResource(R.drawable.tab_right_default);
+					tv_lock.setTextColor(Color.WHITE);
+					tv_unlock.setTextColor(Color.GRAY);
+					
+					isLock = true;
+					break;
+				case R.id.tv_applock_unlock:// 解锁
+					tv_lock.setBackgroundResource(R.drawable.tab_left_default);
+					tv_unlock.setBackgroundResource(R.drawable.tab_right_pressed);
+					tv_lock.setTextColor(Color.GRAY);
+					tv_unlock.setTextColor(Color.WHITE);
+					isLock = false;
+					break;
+				default:
+					break;
+				}
+				//处理回调 把数据状态回调给用户
+				if (mOnLockChangeListener != null) {
+					mOnLockChangeListener.onLockChanged(isLock);
+				}
+
+			}
+		};
+		tv_lock.setOnClickListener(listener);
+		tv_unlock.setOnClickListener(listener);
+	}
+
+	private void initView() {
+		// 把布局转成view添加到容器中
+
+		rootView = View.inflate(getContext(), R.layout.view_applockhead, this);
+
+		tv_lock = (TextView) rootView.findViewById(R.id.tv_applock_lock);
+		tv_unlock = (TextView) rootView.findViewById(R.id.tv_applock_unlock);
+
+	}
+
+	public AppLockHeadView(Context context) {
+		this(context, null);
+		// TODO Auto-generated constructor stub
+	}
+
+}

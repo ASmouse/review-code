@@ -1,0 +1,20 @@
+package com.itheima.mobilesafe13.activity;
+
+import android.app.Activity;
+
+/**
+ * @author Administrator
+ * @comp 黑马程序员
+ * @date 2015-9-13
+ * @desc 第一个设置向导界面
+
+ * @version $Rev$
+ * @author $Author$
+ * @Date  $Date$
+ * @Id    $Id$
+ * @Url   $URL$
+ * 
+ */
+public class Setup4Activity extends Activity {
+
+}

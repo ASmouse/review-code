@@ -1,0 +1,40 @@
+package com.itheima.mobilesafe13.service;
+
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+
+/**
+ * @author Administrator
+ * @desc  锁屏清理进程 
+ * @date 2015-9-22
+ * @Author $Author$ Id Rev URL
+ * @Date $Date$
+ * @Id $Id$
+ * @Rev $Rev$
+ * @URL $URL$
+ *
+ */
+public class ScreenOffClearTaskService extends Service {
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void onCreate() {
+		// TODO Auto-generated method stub
+		System.out.println("锁屏清理进程服务开启");
+		super.onCreate();
+	}
+	
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		System.out.println("锁屏清理进程服务关闭");
+		super.onDestroy();
+	}
+
+}

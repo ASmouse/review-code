@@ -1,0 +1,48 @@
+package com.itheima.mobilesafe13.activity;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.itheima.mobilesafe13.R;
+import com.itheima.mobilesafe13.dao.AddressDao;
+import com.itheima.mobilesafe13.utils.ShowToast;
+
+public class PhoneLocationActivity extends Activity {
+	private EditText et_phone;
+	private TextView tv_showlocation;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		
+		initView();
+	}
+	
+	public void query(View v){
+		//查询
+		String phone = et_phone.getText().toString().trim();
+		
+		if (TextUtils.isEmpty(phone)) {
+			ShowToast.show("号码不能为空", this);
+			return;
+		}
+		
+		//查询
+		//判断移动号还是固定号码
+		String location = AddressDao.getLocation(phone);
+		//显示
+		tv_showlocation.setText("归属地:\n" + location);
+		
+	}
+
+	private void initView() {
+		setContentView(R.layout.activity_phonelocation);
+		et_phone = (EditText) findViewById(R.id.et_phonelocation_phone);
+		tv_showlocation = (TextView) findViewById(R.id.tv_phonelocation_showlocation);
+	}
+}
